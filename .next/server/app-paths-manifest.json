@@ -1,0 +1,9 @@
+{
+  "/buyer/onboarding/page": "app/buyer/onboarding/page.js",
+  "/page": "app/page.js",
+  "/login/page": "app/login/page.js",
+  "/dealer/redeem/page": "app/dealer/redeem/page.js",
+  "/buyer/dashboard/page": "app/buyer/dashboard/page.js",
+  "/dealer/home/page": "app/dealer/home/page.js",
+  "/dealer/history/page": "app/dealer/history/page.js"
+}
