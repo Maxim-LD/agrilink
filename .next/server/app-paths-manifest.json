@@ -1,9 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/login/page": "app/login/page.js",
-  "/dealer/redeem/page": "app/dealer/redeem/page.js",
-  "/dealer/home/page": "app/dealer/home/page.js",
-  "/buyer/dashboard/page": "app/buyer/dashboard/page.js",
-  "/aggregator/onboarding/page": "app/aggregator/onboarding/page.js",
-  "/buyer/onboarding/page": "app/buyer/onboarding/page.js"
-}
