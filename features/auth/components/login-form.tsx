@@ -28,14 +28,15 @@ export function LoginForm() {
       const data = await loginUser({ phone, password });
 
       if (data && data.token) {
+        const role = data.user.role?.toLowerCase();
         // Route based on role
-        if (data.user.role === "aggregator") {
+        if (role === "aggregator") {
           router.push("/aggregator/home");
-        } else if (data.user.role === "buyer") {
+        } else if (role === "buyer") {
           router.push("/buyer/dashboard");
-        } else if (data.user.role === "dealer") {
+        } else if (role === "dealer") {
           router.push("/dealer/home");
-        } else if (data.user.role === "admin") {
+        } else if (role === "admin") {
           router.push("/admin/dashboard");
         } else {
           router.push("/");
