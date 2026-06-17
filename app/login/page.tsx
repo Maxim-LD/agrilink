@@ -28,7 +28,7 @@ export default function LoginPage() {
         <p className="mt-12 text-center text-sm text-white/50">
           Don't have an account? Choose a portal on the{" "}
           <Link href="/" className="font-bold text-emerald-400 hover:text-emerald-300 underline underline-offset-4">
-            home page
+            Homepage
           </Link>{" "}
           to register.
         </p>
