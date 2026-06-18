@@ -14,10 +14,20 @@ export function setAuthToken(token: string): void {
   }
 }
 
+export function setAuthUser(user: unknown): void {
+  if (typeof window !== 'undefined') {
+    const serializedUser = JSON.stringify(user);
+    localStorage.setItem('agrilink_user', serializedUser);
+    document.cookie = `agrilink_user=${encodeURIComponent(serializedUser)}; path=/; max-age=86400; SameSite=Lax`;
+  }
+}
+
 export function removeAuthToken(): void {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('agrilink_token');
+    localStorage.removeItem('agrilink_user');
     document.cookie = 'agrilink_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'agrilink_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
   }
 }
 
