@@ -1,4 +1,4 @@
-import { fetchApi, setAuthToken } from "@/lib/api-client";
+import { fetchApi, setAuthToken, setAuthUser } from "@/lib/api-client";
 
 export type LoginPayload = {
   phone: string;
@@ -24,6 +24,9 @@ export async function loginUser(payload: LoginPayload): Promise<LoginResponse | 
     const data = response.data;
     if (data.token) {
       setAuthToken(data.token);
+    }
+    if (data.user) {
+      setAuthUser(data.user);
     }
     return data;
   }

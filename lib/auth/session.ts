@@ -21,6 +21,8 @@ export async function getCurrentUserSession(): Promise<UserSession | null> {
   try {
     const cookieStore = await cookies();
     const tokenCookie = cookieStore.get("agrilink_token");
+    const backendUserCookie = cookieStore.get("agrilink_user");
+    const backendUser = parseBackendUserCookie(backendUserCookie?.value);
 
     if (tokenCookie && tokenCookie.value) {
       const token = tokenCookie.value;
@@ -33,11 +35,11 @@ export async function getCurrentUserSession(): Promise<UserSession | null> {
         const payload = JSON.parse(payloadStr);
         
         return {
-          id: payload.id || "",
-          name: payload.name || payload.fullName || "User",
-          email: payload.email || payload.phone || "",
-          role: payload.role ? payload.role.toLowerCase() as UserSession['role'] : "buyer",
-          isAdmin: payload.role?.toLowerCase() === "admin"
+          id: backendUser?.id || payload.id || payload.sub || "",
+          name: getSessionName(backendUser, payload),
+          email: backendUser?.email || payload.email || payload.phone || "",
+          role: getSessionRole(backendUser, payload),
+          isAdmin: getSessionRole(backendUser, payload) === "admin"
         };
       }
     }
@@ -50,6 +52,40 @@ export async function getCurrentUserSession(): Promise<UserSession | null> {
   }
 
   return null;
+}
+
+function parseBackendUserCookie(value?: string) {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(decodeURIComponent(value)) as Record<string, string | undefined>;
+  } catch {
+    return null;
+  }
+}
+
+function getSessionName(backendUser: Record<string, string | undefined> | null, payload: Record<string, string | undefined>): string {
+  return (
+    backendUser?.fullName ||
+    backendUser?.name ||
+    backendUser?.organizationName ||
+    payload.fullName ||
+    payload.name ||
+    payload.organizationName ||
+    "User"
+  );
+}
+
+function getSessionRole(backendUser: Record<string, string | undefined> | null, payload: Record<string, string | undefined>): UserSession["role"] {
+  const role = (backendUser?.role || payload.role || "buyer").toLowerCase();
+
+  if (role === "admin" || role === "aggregator" || role === "dealer" || role === "buyer") {
+    return role;
+  }
+
+  return "buyer";
 }
 
 export async function requireAdminSession(): Promise<UserSession> {
